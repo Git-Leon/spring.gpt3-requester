@@ -7,7 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -16,6 +18,15 @@ public class GptService {
 
     public GptService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
+    }
+
+    public List<ResponseEntity<String>> queries(String token, String... prompts) {
+        List<ResponseEntity<String>> result = new ArrayList<>();
+        for (int i = 0; i < prompts.length; i++) {
+            String prompt = prompts[i];
+            result.add(query(prompt, token));
+        }
+        return result;
     }
 
     public ResponseEntity<String> query(String prompt, String token) {

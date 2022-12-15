@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -22,6 +24,16 @@ public class GptController {
 
     public GptController(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
+    }
+
+    @PostMapping("/queries")
+    public List<ResponseEntity<String>> queries(
+            @RequestBody List<GptSimpleRequest> requestObjects) {
+        List<ResponseEntity<String>> result = new ArrayList<>();
+        for (GptSimpleRequest request : requestObjects) {
+            result.add(query(request));
+        }
+        return result;
     }
 
     @PostMapping("/query")
