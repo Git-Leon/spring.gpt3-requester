@@ -1,12 +1,73 @@
-# Spring Boot Project Template
-* **Objective** - The purpose of this repository is to create a standard template to clone from when creating new spring boot projects.
+# Spring Boot GPT3
+
+* **Purpose** - To create a mechanism for communicating to GPT3 using the Spring Boot framework.
+
+![](./demo.png)
+
+
 
 ## How to use
-* To use this project as template, _clone_ the project into your `~/dev` directory,  
-* Upon cloning reconfigure the remote by
-    1. delete the `.git` folder associated with project.
-    2. `git init` to create a new `.git` folder
-    3. point the new `.git` folder to your new remote via `git remote set-url`.
-* After reconfiguring remote, open the project in a text editor (VSCode, IntelliJ, SublimeText, Atom, etc.)
-* Ensure that the `artifactId` of the project is changed from `spring-template-project` to a more appropriate project name.
-* Click view the [`README-Sample.md`](./README-Sample.md) to view _how_ a `README` should be structured for a project.
+
+
+### Testing Application via Postman
+
+* Ensure that the `start-class` tag in your `pom.xml` encapsulates `com.github.curriculeon.MyApplication`
+* Open a command line and navigate to the project's root directory and run this command:
+	* `mvn spring-boot:run`
+* Launch the [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en) app and enter the URI `http://localhost:8080/` and hit Send.
+* If your application cannot run because something is occupying a port, use this command with the respective port number specified:
+    * **OSX and Linux**
+	    * ``kill -kill `lsof -t -i tcp:8080` ``
+    * **Windows**
+        * _For use in command line_:
+            * `for /f "tokens=5" %a in ('netstat -aon ^| find ":8080" ^| find "LISTENING"') do taskkill /f /pid %a`
+        * _For use in bat-file_:
+            * `for /f "tokens=5" %%a in ('netstat -aon ^| find ":8080" ^| find "LISTENING"') do taskkill /f /pid %%a` 
+
+
+
+
+## How to Download
+
+#### Part 1 - Forking the Project
+* To _fork_ the project, click the `Fork` button located at the top right of the project.
+
+
+#### Part 2 - Navigating to _forked_ Repository
+* Navigate to your github profile to find the _newly forked repository_.
+* Copy the URL of the project to the clipboard.
+
+#### Part 3 - Cloning _forked_ repository
+* Clone the repository from **your account** into the `~/dev` directory.
+  * if you do not have a `~/dev` directory, make one by executing the following command:
+    * `mkdir ~/dev`
+  * navigate to the `~/dev` directory by executing the following command:
+    * `cd ~/dev`
+  * clone the project by executing the following command:
+    * `git clone https://github.com/MYUSERNAME/NAMEOFPROJECT`
+
+#### Part 4 - Check Build
+* Ensure that the tests run upon opening the project.
+    * You should see `Tests Failed: 99 of 99 tests`
+    
+
+
+
+
+
+## How to Submit
+
+#### Part 1 -  _Pushing_ local changes to remote repository
+* from a _terminal_ navigate to the root directory of the _cloned_ project.
+* from the root directory of the project, execute the following commands:
+    * add all changes
+      * `git add .`
+    * commit changes to be pushed
+      * `git commit -m 'I have added changes'`
+    * push changes to your repository
+      * `git push -u origin master`
+
+#### Part 2 - Submitting assignment
+* from the browser, navigate to the _forked_ project from **your** github account.
+* click the `Pull Requests` tab.
+* select `New Pull Request`
