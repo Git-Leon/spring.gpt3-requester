@@ -2,10 +2,7 @@ package com.github.curriculeon.controllers;
 
 import com.github.curriculeon.models.GptNestedRequest;
 import com.github.curriculeon.models.GptSimpleRequest;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,20 +25,25 @@ public class GptController {
     }
 
     @PostMapping("/nested-query")
-    public ResponseEntity<String> nestedQuery(
+    public ResponseEntity<Map<String, String>> nestedQuery(
             @RequestBody GptNestedRequest requestObject) {
         String token = requestObject.getToken();
-        String prompt = requestObject.getPrompt();
+        String prompt = new StringBuilder(requestObject.getPrompt())
+                .append(" Please end your response with a question to prompt me with another response to your response.")
+                .toString();
         int n = requestObject.getN();
-        GptSimpleRequest simpleRequest = new GptSimpleRequest(token, prompt);
+        GptSimpleRequest simpleRequest = new GptSimpleRequest(prompt, token);
         ResponseEntity<String> response = query(simpleRequest);
+        Map<String, String> result = new HashMap<>();
+        result.put(prompt, response.getBody());
         String previousResponse = response.getBody();
         for (int i = 1; i < n; i++) {
-            simpleRequest = new GptSimpleRequest(token, previousResponse);
+            simpleRequest = new GptSimpleRequest(previousResponse, token);
             response = query(simpleRequest);
+            result.put(previousResponse, response.getBody());
             previousResponse = response.getBody();
         }
-        return response;
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping("/queries")
