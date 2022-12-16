@@ -67,7 +67,7 @@
     * push changes to your repository
       * `git push -u origin master`
 
-#### Part 2 - Submitting assignment
+#### Part 2 - Submitting changes
 * from the browser, navigate to the _forked_ project from **your** github account.
 * click the `Pull Requests` tab.
 * select `New Pull Request`
