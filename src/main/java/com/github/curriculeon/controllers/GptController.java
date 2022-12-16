@@ -1,5 +1,6 @@
 package com.github.curriculeon.controllers;
 
+import com.github.curriculeon.models.GptNestedRequest;
 import com.github.curriculeon.models.GptSimpleRequest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -24,6 +25,23 @@ public class GptController {
 
     public GptController(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
+    }
+
+    @PostMapping("/nested-query")
+    public ResponseEntity<String> nestedQuery(
+            @RequestBody GptNestedRequest requestObject) {
+        String token = requestObject.getToken();
+        String prompt = requestObject.getPrompt();
+        int n = requestObject.getN();
+        GptSimpleRequest simpleRequest = new GptSimpleRequest(token, prompt);
+        ResponseEntity<String> response = query(simpleRequest);
+        String previousResponse = response.getBody();
+        for (int i = 1; i < n; i++) {
+            simpleRequest = new GptSimpleRequest(token, previousResponse);
+            response = query(simpleRequest);
+            previousResponse = response.getBody();
+        }
+        return response;
     }
 
     @PostMapping("/queries")
