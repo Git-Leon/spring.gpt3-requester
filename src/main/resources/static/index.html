@@ -2,53 +2,14 @@
         src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
         crossorigin="anonymous"></script>
+<head>
+    <script src="./GptService.js"></script>
+    <script src="./Service.js"></script>
+</head>
 
 
- Token: <input id="token"><br>
+Token: <input id="token"><br>
 Prompt: <input id="prompt"><br>
 <form>
-    <button onclick="create(event)">Ask the assistant!</button>
+    <button onclick="request(event)">Ask the assistant!</button>
 </form>
-
-
-
-<script>
-    class Request {
-        constructor(token,prompt) {
-            this.token = token;
-            this.prompt = prompt;
-        }
-    }
-
-    function create(e) {
-        e.preventDefault();
-        console.log("click")
-        let token = document.getElementById("token").value;
-        let prompt = document.getElementById("prompt").value;
-        let request = new Request(token, prompt);
-        let personData = JSON.stringify(request);
-        console.log(personData)
-
-
-        $.ajax({
-            type: "POST",
-            crossDomain: true,
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-            url: "/gpt/query/",
-            data: personData,
-            dataType: "JSON ",
-            success: function (response) {
-                alert(JSON.stringify(response));
-            },
-            error: function () {
-                alert('Error while request..');
-            }
-        });
-
-    }
-    
-</script>
