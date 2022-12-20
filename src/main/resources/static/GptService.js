@@ -3,6 +3,47 @@ class GptService {
         this.token = token;
     }
 
+    readFile(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = event => {
+          resolve(event.target.result);
+        };
+        reader.onerror = error => {
+          reject(error);
+        };
+        reader.readAsText(file);
+      });
+    }
+
+    async promptRequestWithFile(files, e) {
+      e.preventDefault();
+      const extension = '.txt';
+
+      for (const file of files) {
+        if (path.extname(file.name) === extension) {
+          const fileContents = await readFile(file);
+          const token = document.getElementById("token").value;
+          const requestObject = {
+            token: token,
+            prompt: fileContents
+          };
+
+          $.ajax({
+            async: false,
+            type: "POST",
+            url: "/gpt/query-with-file",
+            data: JSON.stringify(requestObject),
+            contentType: "application/json",
+            success: function(response) {
+              console.log(response);
+            }
+          });
+        }
+      }
+    }
+
+
     promptRequest(prompt, e) {
         e.preventDefault();
         let result;

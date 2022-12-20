@@ -1,0 +1,16 @@
+<script
+        src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+        crossorigin="anonymous"></script>
+<head>
+    <script src="./GptService.js"></script>
+    <script src="./Service.js"></script>
+</head>
+
+
+Token: <input id="token"><br>
+Prompt: <input id="prompt"><br>
+<form>
+    <input type="file" id="fileInput" multiple />
+    <button onclick="requestWithFile(event)">Ask the assistant!</button>
+</form>
